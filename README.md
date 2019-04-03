@@ -1,109 +1,54 @@
-# node-pty
+# node-pty-prebuilt-multiarch
 
-[![Build Status](https://dev.azure.com/vscode/node-pty/_apis/build/status/Microsoft.node-pty)](https://dev.azure.com/vscode/node-pty/_apis/build/status/Microsoft.node-pty?branchName=master)
+[![Travis CI build status](https://travis-ci.org/oznu/node-pty-prebuilt-multiarch.svg)](https://travis-ci.org/oznu/node-pty-prebuilt-multiarch)
 
-`forkpty(3)` bindings for node.js. This allows you to fork processes with pseudoterminal file descriptors. It returns a terminal object which allows reads and writes.
+This project is a parallel fork of [`node-pty`](https://github.com/Microsoft/node-pty)
+providing prebuilt packages for certain Node.js and Electron versions.
 
-This is useful for:
+Inspired by [daviwil/node-pty-prebuilt](https://github.com/daviwil/node-pty-prebuilt).
 
-- Writing a terminal emulator (eg. via [xterm.js](https://github.com/sourcelair/xterm.js)).
-- Getting certain programs to *think* you're a terminal, such as when you need a program to send you control sequences.
+## Usage
 
-`node-pty` supports Linux, macOS and Windows. Windows support is possible by utilizing the [Windows conpty API](https://blogs.msdn.microsoft.com/commandline/2018/08/02/windows-command-line-introducing-the-windows-pseudo-console-conpty/) on Windows 1809+ and the [winpty](https://github.com/rprichard/winpty) library in older version.
+Thanks to the excellent [`prebuild`](https://github.com/prebuild/prebuild) and
+[`prebuild-install`](https://github.com/prebuild/prebuild) modules, using this module
+is extremely easy.  You merely have to change your `node-pty` dependency to
+`node-pty-prebuilt-multiarch` and then change any `require` statements in your code from
+`require('node-pty')` to `require('node-pty-prebuilt-multiarch')`.
 
-## Real-world Uses
+> **NOTE**: We started shipping prebuilds as of node-pty version 0.8.1, no prior versions
+> are provided!  If you were using an earlier version of `node-pty` you will need
+> to update your code to account for any API changes that may have occurred.
 
-`node-pty` powers many different terminal emulators, including:
+## How It Works
 
-- [Microsoft Visual Studio Code](https://code.visualstudio.com)
-- [Hyper](https://hyper.is/)
-- [Upterm](https://github.com/railsware/upterm)
-- [Script Runner](https://github.com/ioquatix/script-runner) for Atom.
-- [Theia](https://github.com/theia-ide/theia)
-- [FreeMAN](https://github.com/matthew-matvei/freeman) file manager
-- [atom-xterm](https://atom.io/packages/atom-xterm) - Atom plugin for providing terminals inside your Atom workspace.
-- [Termination](https://atom.io/packages/termination) - Another Atom plugin that provides terminals inside your Atom workspace.
+We maintain a parallel fork of the `node-pty` codebase that will be updated as new
+releases are shipped.  When we merge new updates to the code into the `prebuild`
+branch, new prebuilt packages for our supported Node.js and Electron versions
+are updated to the corresponding [GitHub release](https://github.com/oznu/node-pty-prebuilt-multiarch/releases).
 
-Do you use node-pty in your application as well? Please open a [Pull Request](https://github.com/Tyriar/node-pty/pulls) to include it here. We would love to have it in our list.
+When `node-pty-prebuilt` is installed as a package dependency, the install script
+checks to see if there's a prebuilt package on this repo for the OS, ABI version,
+and architecture of the current process and then downloads it, extracting it into
+the module path.  If a corresponding prebuilt package is not found, `node-gyp`
+is invoked to build the package for the current platform.
 
-## Example Usage
+## Prebuilt Versions
 
-```js
-var os = require('os');
-var pty = require('node-pty');
+| OS              | Architectures                 |
+| --------------- |-------------------------------|
+| macOS           | amd64                         |
+| Linux (glibc)   | ia32, amd64, arm32v6, arm64v8 |
+| Linux (musl)    | amd64, arm32v6, arm64v8       |
+| Windows*        | ia32, amd64                   |
 
-var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
+We currently build packages for all versions of Node.js and Electron that are supported by the `prebuild` module on Linux and macOS. You can see the full list of versions by checking out the [`supportedTargets`](https://github.com/lgeiger/node-abi/blob/master/index.js#L51) list in [`node-abi`](https://github.com/lgeiger/node-abi/blob/master/index.js#L51).
 
-var ptyProcess = pty.spawn(shell, [], {
-  name: 'xterm-color',
-  cols: 80,
-  rows: 30,
-  cwd: process.env.HOME,
-  env: process.env
-});
-
-ptyProcess.on('data', function(data) {
-  process.stdout.write(data);
-});
-
-ptyProcess.write('ls\r');
-ptyProcess.resize(100, 40);
-ptyProcess.write('ls\r');
-```
-
-## Building
-
-```bash
-# Install dependencies and build C++
-npm install
-# Compile TypeScript -> JavaScript
-npm run tsc
-```
-
-## Dependencies
-
-### Linux/Ubuntu
-
-```
-sudo apt install -y make python build-essential
-```
-
-### Windows
-
-`npm install` requires some tools to be present in the system like Python and C++ compiler. Windows users can easily install them by running the following command in PowerShell as administrator. For more information see https://github.com/felixrieseberg/windows-build-tools:
-
-```sh
-npm install --global --production windows-build-tools
-```
-
-The Windows SDK is also needed which can be [downloaded here](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk). Only the "Desktop C++ Apps" components are needed to be installed.
-
-## Debugging
-
-[The wiki](https://github.com/Microsoft/node-pty/wiki/Debugging) contains instructions for debugging node-pty.
-
-## Security
-
-All processes launched from node-pty will launch at the same permission level of the parent process. Take care particularly when using node-pty inside a server that's accessible on the internet. We recommend launching the pty inside a container to protect your host machine.
-
-## Thread Safety
-
-Note that node-pty is not thread safe so running it across multiple worker threads in node.js could cause issues.
-
-## Troubleshooting
-
-**Powershell gives error 8009001d**
-
-> Internal Windows PowerShell error.  Loading managed Windows PowerShell failed with error 8009001d.
-
-This happens when PowerShell is launched with no `SystemRoot` environment variable present.
-
-## pty.js
-
-This project is forked from [chjj/pty.js](https://github.com/chjj/pty.js) with the primary goals being to provide better support for later Node.JS versions and Windows.
+*On Windows, we only provide prebuilt binaries for Node.js 10 or higher.
 
 ## License
 
-Copyright (c) 2012-2015, Christopher Jeffrey (MIT License).<br>
-Copyright (c) 2016, Daniel Imms (MIT License).<br>
+Copyright (c) 2012-2015, Christopher Jeffrey (MIT License).
+Copyright (c) 2016, Daniel Imms (MIT License).
 Copyright (c) 2018, Microsoft Corporation (MIT License).
+Copyright (c) 2018, David Wilson (MIT License).
+Copyright (c) 2018, oznu (MIT License).
