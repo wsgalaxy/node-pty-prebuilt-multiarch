@@ -4,7 +4,7 @@
   "author": {
     "name": "Microsoft Corporation"
   },
-  "version": "0.8.2-unofficial.1",
+  "version": "0.9.0-beta2",
   "license": "MIT",
   "main": "./lib/index.js",
   "types": "./typings/node-pty.d.ts",
@@ -42,7 +42,7 @@
     "prepublish": "npm run tsc"
   },
   "dependencies": {
-    "nan": "2.12.1",
+    "nan": "^2.13.2",
     "prebuild-install": "^5.2.5"
   },
   "devDependencies": {
