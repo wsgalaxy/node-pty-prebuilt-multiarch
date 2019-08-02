@@ -158,6 +158,10 @@ export class UnixTerminal extends Terminal {
     this._forwardEvents();
   }
 
+  protected _write(data: string): void {
+    this._socket.write(data);
+  }
+
   /**
    * openpty
    */
@@ -215,10 +219,6 @@ export class UnixTerminal extends Terminal {
     });
 
     return self;
-  }
-
-  public write(data: string): void {
-    this._socket.write(data);
   }
 
   public destroy(): void {
