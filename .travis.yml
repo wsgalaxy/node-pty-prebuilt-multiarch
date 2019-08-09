@@ -7,12 +7,16 @@ matrix:
       language: node_js
       node_js:
         - "lts/*"
+      cache:
+        npm: false
 
     # windows
     - os: windows
       language: node_js
       node_js:
         - "lts/*"
+      cache:
+        npm: false
 
     # linux
     - os: linux
