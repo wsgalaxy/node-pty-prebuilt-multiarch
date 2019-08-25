@@ -12,6 +12,8 @@ matrix:
 
     # windows
     - os: windows
+      env:
+        - YARN_GPG=no
       language: node_js
       node_js:
         - "lts/*"
