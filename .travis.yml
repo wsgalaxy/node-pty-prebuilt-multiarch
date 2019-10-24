@@ -64,13 +64,13 @@ script:
 
   # macos - only supporting Node.js 8+
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then prebuild -t 8.0.0 -t 10.0.0 -t 11.0.0 -t 12.0.0 ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then prebuild -t 4.0.0 -t 4.0.4 -t 5.0.0 -r electron ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then prebuild -t 4.0.0 -t 4.0.4 -t 5.0.0 -t 6.0.0 -t 7.0.0 -r electron ; fi
 
   # windows - older versions of node to not work - only supporting Node.js 10+
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then prebuild -t 10.0.0 -t 11.0.0 -t 12.0.0 --include-regex "\.(node|exe|dll|pdb)$" ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then prebuild -a ia32 -t 10.0.0 -t 11.0.0 -t 12.0.0  --include-regex "\.(node|exe|dll|pdb)$" ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then prebuild -t 3.0.0 -t 4.0.0 -t 4.0.4 -t 5.0.0 -r electron --include-regex "\.(node|exe|dll|pdb)$" ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then prebuild -a ia32 -t 3.0.0 -t 4.0.0 -t 4.0.4 -t 5.0.0 -r electron --include-regex "\.(node|exe|dll|pdb)$" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then prebuild -t 3.0.0 -t 4.0.0 -t 4.0.4 -t 5.0.0 -t 6.0.0 -t 7.0.0 -r electron --include-regex "\.(node|exe|dll|pdb)$" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then prebuild -a ia32 -t 3.0.0 -t 4.0.0 -t 4.0.4 -t 5.0.0 -t 6.0.0 -t 7.0.0 -r electron --include-regex "\.(node|exe|dll|pdb)$" ; fi
 
 deploy:
   provider: releases
