@@ -5,6 +5,8 @@
 cd /node-pty
 rm -rf node_modules
 
+echo "Building for $(uname -m)..."
+
 npm install --only=prod --ignore-scripts
 
 prebuild --all
