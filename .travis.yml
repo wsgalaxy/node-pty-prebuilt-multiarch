@@ -39,7 +39,7 @@ matrix:
         - docker
     - os: linux
       # use balenalib/raspberry-pi-debian to target arm32v6 / armv6l for Raspberry Pi 1 support
-      env: BASE_IMAGE=balenalib/raspberry-pi-debian:buster QEMU_ARCH=arm DOCKERFILE="Dockerfile.debian"
+      env: BASE_IMAGE=balenalib/raspberry-pi-debian:stretch QEMU_ARCH=arm DOCKERFILE="Dockerfile.debian"
       services:
         - docker
     - os: linux
