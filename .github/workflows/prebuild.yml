@@ -96,6 +96,7 @@ jobs:
 
     - name: Windows - Prebuild Binaries
       if: runner.os == 'Windows'
+      shell: cmd
       run: |
         npm install --ignore-scripts
         node .prebuild/build.js
