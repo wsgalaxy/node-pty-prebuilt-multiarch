@@ -23,11 +23,13 @@ jobs:
             BASE_IMAGE: library/alpine:3.9
             DOCKERFILE: Dockerfile.alpine
             QEMU_ARCH: x86_64
+
           - name: alpine-arm32v6
             os: ubuntu-latest
             BASE_IMAGE: arm32v6/alpine:3.9 
             DOCKERFILE: Dockerfile.alpine
             QEMU_ARCH: arm
+
           - name: alpine-arm64v8
             os: ubuntu-latest
             BASE_IMAGE: arm64v8/alpine:3.9
@@ -69,9 +71,16 @@ jobs:
         docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
     - name: Linux - Build Docker Image
+      if: runner.os == 'Linux'
       run: |
         docker build -f .prebuild/${{ matrix.DOCKERFILE }} --build-arg BASE_IMAGE=${{ matrix.BASE_IMAGE }} --build-arg QEMU_ARCH=${{ matrix.QEMU_ARCH }} -t multiarch-build .
 
     - name: Linux - Prebuild Binaries
+      if: runner.os == 'Linux'
       run: |
         docker run --rm -v $(pwd):/node-pty multiarch-build
+
+    - name: macOS - Prebuild Binaries
+      if: runner.os == 'macOS'
+      run: |
+        node .prebuild/build.js
