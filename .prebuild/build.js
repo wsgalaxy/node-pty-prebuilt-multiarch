@@ -11,6 +11,8 @@ const prebuildPath = path.resolve(prebuildPkgPath, 'bin.js');
 const abiRegistryJsonPath = path.resolve(nodeAbiPkgPath, 'abi_registry.json');
 fs.copyFileSync(path.resolve(__dirname, 'abi_registry.json'), abiRegistryJsonPath);
 
+const cwd = path.resolve(__dirname, '../');
+
 // common windows flags
 const winBuildOpts = [
   '--include-regex',
@@ -49,17 +51,24 @@ if (os.platform() === 'win32') {
 console.log('Building for Node.js:');
 console.log(nodeBuildCmd.join(' '));
 
-child_process.spawnSync(process.execPath, nodeBuildCmd, {
-  stdio: ['inherit', 'inherit', 'inherit']
-});
-
-// build i386?
-if ((os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) || os.platform() === 'win32') {
-  nodeBuildCmd.push('-a', 'ia32');
-
+try {
   child_process.spawnSync(process.execPath, nodeBuildCmd, {
+    cwd: cwd,
     stdio: ['inherit', 'inherit', 'inherit']
   });
+
+  // build i386?
+  if ((os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) || os.platform() === 'win32') {
+    nodeBuildCmd.push('-a', 'ia32');
+
+    child_process.spawnSync(process.execPath, nodeBuildCmd, {
+      cwd: cwd,
+      stdio: ['inherit', 'inherit', 'inherit']
+    });
+  }
+} catch (e) {
+  console.error(e);
+  return;
 }
 
 /** 
@@ -97,14 +106,20 @@ if (os.platform() === 'win32') {
 console.log('Building for Electron:');
 console.log(electronBuildCmd.join(' '));
 
-child_process.spawnSync(process.execPath, electronBuildCmd, {
-  stdio: ['inherit', 'inherit', 'inherit']
-});
-
-if ((os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) || os.platform() === 'win32') {
-  electronBuildCmd.push('-a', 'ia32');
-
+try {
   child_process.spawnSync(process.execPath, electronBuildCmd, {
+    cwd: cwd,
     stdio: ['inherit', 'inherit', 'inherit']
   });
+
+  if ((os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) || os.platform() === 'win32') {
+    electronBuildCmd.push('-a', 'ia32');
+
+    child_process.spawnSync(process.execPath, electronBuildCmd, {
+      cwd: cwd,
+      stdio: ['inherit', 'inherit', 'inherit']
+    });
+  }
+} catch (e) {
+  return;
 }
