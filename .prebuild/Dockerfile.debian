@@ -9,7 +9,9 @@ COPY .prebuild/qemu/qemu-${QEMU_ARCH}-static /usr/bin/
 RUN apt-get update \
   && apt-get install -y gcc g++ make python curl
 
-ENV NODE_VERSION 14.0.0
+RUN [ "$(uname -m)" = "x86_64" ] && apt-get install -y g++-multilib gcc-multilib || echo "ok"
+
+ENV NODE_VERSION 15.8.0
 
 RUN case "${QEMU_ARCH}" in \
     x86_64) NODE_ARCH='x64';; \
@@ -24,8 +26,6 @@ RUN case "${QEMU_ARCH}" in \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && npm set prefix /usr/local \
   && npm config set unsafe-perm true
-
-RUN npm install -g prebuild@latest
 
 RUN mkdir /node-pty
 WORKDIR /node-pty
