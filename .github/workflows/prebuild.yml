@@ -19,7 +19,7 @@ jobs:
           # debian-x86_64,
           # debian-arm32v6,
           # debian-arm64v8,
-          # darwin-x86_64,
+          darwin-x86_64,
           windows-x86_64,
         ]
         include:
@@ -59,8 +59,8 @@ jobs:
           #   DOCKERFILE: Dockerfile.debian
           #   QEMU_ARCH: aarch64
 
-          # - name: darwin-x86_64
-          #   os: macOS-latest
+          - name: darwin-x86_64
+            os: macOS-latest
 
           - name: windows-x86_64
             os: windows-latest
