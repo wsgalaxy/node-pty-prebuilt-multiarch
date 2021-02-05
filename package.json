@@ -1,5 +1,5 @@
 {
-  "name": "node-pty",
+  "name": "node-pty-prebuilt-multiarch",
   "description": "Fork pseudoterminals in Node.JS",
   "author": {
     "name": "Microsoft Corporation"
@@ -10,7 +10,7 @@
   "types": "./typings/node-pty.d.ts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Tyriar/node-pty.git"
+    "url": "git://github.com/oznu/node-pty-prebuilt-multiarch.git"
   },
   "files": [
     "binding.gyp",
@@ -20,9 +20,9 @@
     "deps/",
     "typings/"
   ],
-  "homepage": "https://github.com/Tyriar/node-pty",
+  "homepage": "https://github.com/oznu/node-pty-prebuilt-multiarch",
   "bugs": {
-    "url": "https://github.com/Tyriar/node-pty/issues"
+    "url": "https://github.com/oznu/node-pty-prebuilt-multiarch/issues"
   },
   "keywords": [
     "pty",
@@ -36,7 +36,7 @@
     "build": "tsc -b ./src/tsconfig.json",
     "watch": "tsc -b -w ./src/tsconfig.json",
     "lint": "eslint -c .eslintrc.js --ext .ts src/",
-    "install": "node scripts/install.js",
+    "install": "prebuild-install || node scripts/install.js",
     "postinstall": "node scripts/post-install.js",
     "test": "cross-env NODE_ENV=test mocha -R spec --exit lib/*.test.js",
     "posttest": "npm run lint",
@@ -44,7 +44,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "nan": "^2.14.0"
+    "nan": "^2.14.2",
+    "prebuild-install": "^6.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.2",
@@ -54,6 +55,7 @@
     "cross-env": "^5.1.4",
     "eslint": "^6.8.0",
     "mocha": "^7.1.1",
+    "prebuild": "^10.0.1",
     "ps-list": "^6.0.0",
     "typescript": "^3.8.3"
   }
