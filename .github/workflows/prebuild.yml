@@ -83,4 +83,5 @@ jobs:
     - name: macOS - Prebuild Binaries
       if: runner.os == 'macOS'
       run: |
+        npm install
         node .prebuild/build.js
