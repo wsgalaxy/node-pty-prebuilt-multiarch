@@ -100,12 +100,6 @@ jobs:
         npm install
         node .prebuild/build.js
 
-    - name: 'Upload to release'
-      uses: pdamianik/release-tag-to-upload-url-action@v1.0.1
-      with:
-        tag: ${{ github.event.inputs.tag }}
-        token: ${{ secrets.TOKEN_GITHUB }}
-
     - uses: AButler/upload-release-assets@v2.0
       with:
         files: 'prebuilds/*.tar.gz'
