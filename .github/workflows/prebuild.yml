@@ -19,7 +19,7 @@ jobs:
           # debian-x86_64,
           # debian-arm32v6,
           # debian-arm64v8,
-          darwin-x86_64,
+          # darwin-x86_64,
           windows-x86_64,
         ]
         include:
@@ -59,8 +59,8 @@ jobs:
           #   DOCKERFILE: Dockerfile.debian
           #   QEMU_ARCH: aarch64
 
-          - name: darwin-x86_64
-            os: macOS-latest
+          # - name: darwin-x86_64
+          #   os: macOS-latest
 
           - name: windows-x86_64
             os: windows-latest
@@ -91,13 +91,13 @@ jobs:
     - name: macOS - Prebuild Binaries
       if: runner.os == 'macOS'
       run: |
-        npm install
+        npm install --ignore-scripts
         node .prebuild/build.js
 
     - name: Windows - Prebuild Binaries
       if: runner.os == 'Windows'
       run: |
-        npm install
+        npm install --ignore-scripts
         node .prebuild/build.js
         npx prebuild -t 10.0.0 -t 11.0.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 --include-regex "\.(node|exe|dll|pdb)$" 
         npx prebuild -t 10.0.0 -t 11.0.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 --include-regex "\.(node|exe|dll|pdb)$" -a ia32 
