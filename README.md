@@ -1,6 +1,6 @@
 # node-pty-prebuilt-multiarch
 
-[![Travis CI build status](https://travis-ci.org/oznu/node-pty-prebuilt-multiarch.svg)](https://travis-ci.org/oznu/node-pty-prebuilt-multiarch)
+![Prebuild Binaries](https://github.com/oznu/node-pty-prebuilt-multiarch/workflows/Prebuild%20Binaries/badge.svg)
 
 This project is a parallel fork of [`node-pty`](https://github.com/Microsoft/node-pty) providing prebuilt packages for certain Node.js and Electron versions.
 
