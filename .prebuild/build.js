@@ -11,13 +11,11 @@ const prebuildPath = path.resolve(prebuildPkgPath, 'bin.js');
 const abiRegistryJsonPath = path.resolve(nodeAbiPkgPath, 'abi_registry.json');
 fs.copyFileSync(path.resolve(__dirname, 'abi_registry.json'), abiRegistryJsonPath);
 
-const cwd = path.resolve(__dirname, '../');
+if (os.platform() === 'win32') {
+  return;
+}
 
-// common windows flags
-const winBuildOpts = [
-  '--include-regex',
-  '"\.(node|exe|dll|pdb)$"',
-]
+const cwd = path.resolve(__dirname, '../');
 
 /**
  * --------------- Node.js Build ---------------
@@ -44,10 +42,6 @@ const nodeBuildCmd = [
   ...nodeBuildTargets,
 ]
 
-if (os.platform() === 'win32') {
-  nodeBuildCmd.push(...winBuildOpts);
-}
-
 console.log('Building for Node.js:');
 console.log(nodeBuildCmd.join(' '));
 
@@ -58,7 +52,7 @@ try {
   });
 
   // build i386?
-  if ((os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) || os.platform() === 'win32') {
+  if (os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) {
     nodeBuildCmd.push('-a', 'ia32');
 
     child_process.spawnSync(process.execPath, nodeBuildCmd, {
@@ -99,10 +93,6 @@ const electronBuildCmd = [
   ...electronBuildTargets,
 ]
 
-if (os.platform() === 'win32') {
-  electronBuildCmd.push(...winBuildOpts);
-}
-
 console.log('Building for Electron:');
 console.log(electronBuildCmd.join(' '));
 
@@ -112,7 +102,7 @@ try {
     stdio: ['inherit', 'inherit', 'inherit']
   });
 
-  if ((os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) || os.platform() === 'win32') {
+  if (os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) {
     electronBuildCmd.push('-a', 'ia32');
 
     child_process.spawnSync(process.execPath, electronBuildCmd, {
