@@ -20,19 +20,19 @@ jobs:
         include:
           - name: alpine-x86_64
             os: ubuntu-latest
-            BASE_IMAGE: library/alpine:3.9
+            BASE_IMAGE: library/node:15-alpine
             DOCKERFILE: Dockerfile.alpine
             QEMU_ARCH: x86_64
 
           - name: alpine-arm32v6
             os: ubuntu-latest
-            BASE_IMAGE: arm32v6/alpine:3.9 
+            BASE_IMAGE: arm32v6/node:15-alpine
             DOCKERFILE: Dockerfile.alpine
             QEMU_ARCH: arm
 
           - name: alpine-arm64v8
             os: ubuntu-latest
-            BASE_IMAGE: arm64v8/alpine:3.9
+            BASE_IMAGE: arm64v8/node:15-alpine
             DOCKERFILE: Dockerfile.alpine
             QEMU_ARCH: aarch64
 
