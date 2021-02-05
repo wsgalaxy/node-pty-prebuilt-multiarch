@@ -9,53 +9,57 @@ jobs:
     strategy:
       matrix:
         name: [
-          alpine-x86_64,
-          alpine-arm32v6,
-          alpine-arm64v8,
-          debian-x86_64,
-          debian-arm32v6,
-          debian-arm64v8,
-          darwin-x86_64,
+          # alpine-x86_64,
+          # alpine-arm32v6,
+          # alpine-arm64v8,
+          # debian-x86_64,
+          # debian-arm32v6,
+          # debian-arm64v8,
+          # darwin-x86_64,
+          windows-x86_64,
         ]
         include:
-          - name: alpine-x86_64
-            os: ubuntu-latest
-            BASE_IMAGE: library/node:15-alpine
-            DOCKERFILE: Dockerfile.alpine
-            QEMU_ARCH: x86_64
+          # - name: alpine-x86_64
+          #   os: ubuntu-latest
+          #   BASE_IMAGE: library/node:15-alpine
+          #   DOCKERFILE: Dockerfile.alpine
+          #   QEMU_ARCH: x86_64
 
-          - name: alpine-arm32v6
-            os: ubuntu-latest
-            BASE_IMAGE: arm32v6/node:15-alpine
-            DOCKERFILE: Dockerfile.alpine
-            QEMU_ARCH: arm
+          # - name: alpine-arm32v6
+          #   os: ubuntu-latest
+          #   BASE_IMAGE: arm32v6/node:15-alpine
+          #   DOCKERFILE: Dockerfile.alpine
+          #   QEMU_ARCH: arm
 
-          - name: alpine-arm64v8
-            os: ubuntu-latest
-            BASE_IMAGE: arm64v8/node:15-alpine
-            DOCKERFILE: Dockerfile.alpine
-            QEMU_ARCH: aarch64
+          # - name: alpine-arm64v8
+          #   os: ubuntu-latest
+          #   BASE_IMAGE: arm64v8/node:15-alpine
+          #   DOCKERFILE: Dockerfile.alpine
+          #   QEMU_ARCH: aarch64
 
-          - name: debian-x86_64
-            os: ubuntu-latest
-            BASE_IMAGE: library/debian:9.6-slim
-            DOCKERFILE: Dockerfile.debian
-            QEMU_ARCH: x86_64
+          # - name: debian-x86_64
+          #   os: ubuntu-latest
+          #   BASE_IMAGE: library/debian:9.6-slim
+          #   DOCKERFILE: Dockerfile.debian
+          #   QEMU_ARCH: x86_64
 
-          - name: debian-arm32v6
-            os: ubuntu-latest
-            BASE_IMAGE: balenalib/raspberry-pi-debian:stretch
-            DOCKERFILE: Dockerfile.debian
-            QEMU_ARCH: arm
+          # - name: debian-arm32v6
+          #   os: ubuntu-latest
+          #   BASE_IMAGE: balenalib/raspberry-pi-debian:stretch
+          #   DOCKERFILE: Dockerfile.debian
+          #   QEMU_ARCH: arm
 
-          - name: debian-arm64v8
-            os: ubuntu-latest
-            BASE_IMAGE: arm64v8/debian:9.6-slim
-            DOCKERFILE: Dockerfile.debian
-            QEMU_ARCH: aarch64
+          # - name: debian-arm64v8
+          #   os: ubuntu-latest
+          #   BASE_IMAGE: arm64v8/debian:9.6-slim
+          #   DOCKERFILE: Dockerfile.debian
+          #   QEMU_ARCH: aarch64
 
-          - name: darwin-x86_64
-            os: macOS-latest
+          # - name: darwin-x86_64
+          #   os: macOS-latest
+
+          - name: windows-x86_64
+            os: windows-latest
 
     steps: 
     - uses: actions/checkout@v1
@@ -82,6 +86,12 @@ jobs:
 
     - name: macOS - Prebuild Binaries
       if: runner.os == 'macOS'
+      run: |
+        npm install
+        node .prebuild/build.js
+
+    - name: Windows - Prebuild Binaries
+      if: runner.os == 'Windows'
       run: |
         npm install
         node .prebuild/build.js
