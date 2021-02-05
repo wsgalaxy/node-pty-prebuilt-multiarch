@@ -2,6 +2,10 @@ name: "Prebuild Binaries"
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag'     
+        required: true
 
 jobs:
   build:
@@ -9,21 +13,21 @@ jobs:
     strategy:
       matrix:
         name: [
-          # alpine-x86_64,
+          alpine-x86_64,
           # alpine-arm32v6,
           # alpine-arm64v8,
           # debian-x86_64,
           # debian-arm32v6,
           # debian-arm64v8,
           # darwin-x86_64,
-          windows-x86_64,
+          # windows-x86_64,
         ]
         include:
-          # - name: alpine-x86_64
-          #   os: ubuntu-latest
-          #   BASE_IMAGE: library/node:15-alpine
-          #   DOCKERFILE: Dockerfile.alpine
-          #   QEMU_ARCH: x86_64
+          - name: alpine-x86_64
+            os: ubuntu-latest
+            BASE_IMAGE: library/node:15-alpine
+            DOCKERFILE: Dockerfile.alpine
+            QEMU_ARCH: x86_64
 
           # - name: alpine-arm32v6
           #   os: ubuntu-latest
@@ -58,8 +62,8 @@ jobs:
           # - name: darwin-x86_64
           #   os: macOS-latest
 
-          - name: windows-x86_64
-            os: windows-latest
+          # - name: windows-x86_64
+          #   os: windows-latest
 
     steps: 
     - uses: actions/checkout@v1
@@ -95,3 +99,15 @@ jobs:
       run: |
         npm install
         node .prebuild/build.js
+
+    - name: 'Upload to release'
+      uses: pdamianik/release-tag-to-upload-url-action@v1.0.1
+      with:
+        tag: ${{ github.event.inputs.tag }}
+        token: ${{ secrets.TOKEN_GITHUB }}
+
+    - uses: AButler/upload-release-assets@v2.0
+      with:
+        files: 'prebuilds/*.tar.gz'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        release-tag: ${{ github.event.inputs.tag }}
