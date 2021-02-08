@@ -22,7 +22,7 @@ When `node-pty-prebuilt-multiarch` is installed as a package dependency, the ins
 
 | OS              | Architectures               |
 | --------------- |-----------------------------|
-| macOS           | x64, arm64, arm             |
+| macOS           | x64                         |
 | Linux (glibc)   | ia32, x64, armv6, aarch64   |
 | Linux (musl)    | x64, armv6, aarch64         |
 | Windows         | ia32, x64                   |
