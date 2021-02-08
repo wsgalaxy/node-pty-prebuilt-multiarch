@@ -91,15 +91,6 @@ try {
     cwd: cwd,
     stdio: ['inherit', 'inherit', 'inherit']
   });
-
-  if (os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) {
-    electronBuildCmd.push('-a', 'ia32');
-
-    child_process.spawnSync(process.execPath, electronBuildCmd, {
-      cwd: cwd,
-      stdio: ['inherit', 'inherit', 'inherit']
-    });
-  }
 } catch (e) {
   return;
 }
