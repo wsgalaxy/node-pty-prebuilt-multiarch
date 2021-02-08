@@ -8,19 +8,7 @@ import { Terminal, DEFAULT_COLS, DEFAULT_ROWS } from './terminal';
 import { IProcessEnv, IPtyForkOptions, IPtyOpenOptions } from './interfaces';
 import { ArgvOrCommandLine } from './types';
 import { assign } from './utils';
-
-let pty: IUnixNative;
-try {
-  pty = require('../build/Release/pty.node');
-} catch (outerError) {
-  try {
-    pty = require('../build/Debug/pty.node');
-  } catch (innerError) {
-    console.error('innerError', innerError);
-    // Re-throw the exception from the Release require if the Debug require fails as well
-    throw outerError;
-  }
-}
+import pty from './prebuild-loader';
 
 const DEFAULT_FILE = 'sh';
 const DEFAULT_NAME = 'xterm';

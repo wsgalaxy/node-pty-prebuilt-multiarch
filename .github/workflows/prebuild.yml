@@ -17,6 +17,7 @@ jobs:
           alpine-arm32v6,
           alpine-arm64v8,
           debian-x86_64,
+          debian-i386,
           debian-arm32v6,
           debian-arm64v8,
           darwin-x86_64,
@@ -45,6 +46,12 @@ jobs:
             BASE_IMAGE: library/debian:9.6-slim
             DOCKERFILE: Dockerfile.debian
             QEMU_ARCH: x86_64
+
+          - name: debian-i386
+            os: ubuntu-latest
+            BASE_IMAGE: i386/debian:9.6-slim
+            DOCKERFILE: Dockerfile.debian
+            QEMU_ARCH: i386
 
           - name: debian-arm32v6
             os: ubuntu-latest
