@@ -107,7 +107,7 @@ jobs:
       run: |
         npm install --ignore-scripts 
         node .prebuild/build.js 
-        exec .prebuild/windows-build.sh
+        bash .prebuild/windows-build.sh
 
     - uses: AButler/upload-release-assets@v2.0
       with:
