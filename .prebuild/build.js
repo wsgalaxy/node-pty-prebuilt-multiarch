@@ -11,10 +11,6 @@ const prebuildPath = path.resolve(prebuildPkgPath, 'bin.js');
 const abiRegistryJsonPath = path.resolve(nodeAbiPkgPath, 'abi_registry.json');
 fs.copyFileSync(path.resolve(__dirname, 'abi_registry.json'), abiRegistryJsonPath);
 
-if (os.platform() === 'win32') {
-  return;
-}
-
 const cwd = path.resolve(__dirname, '../');
 
 /**
@@ -42,13 +38,18 @@ const nodeBuildCmd = [
   ...nodeBuildTargets,
 ]
 
+if (os.platform() === 'win32') {
+  nodeBuildCmd.push('--include-regex', '"\.(node|exe|dll|pdb)"')
+}
+
 console.log('Building for Node.js:');
 console.log(nodeBuildCmd.join(' '));
 
 try {
   child_process.spawnSync(process.execPath, nodeBuildCmd, {
     cwd: cwd,
-    stdio: ['inherit', 'inherit', 'inherit']
+    stdio: ['inherit', 'inherit', 'inherit'],
+    shell: 'bash'
   });
 } catch (e) {
   console.error(e);
@@ -83,13 +84,18 @@ const electronBuildCmd = [
   ...electronBuildTargets,
 ]
 
+if (os.platform() === 'win32') {
+  electronBuildCmd.push('--include-regex', '"\.(node|exe|dll|pdb)"')
+}
+
 console.log('Building for Electron:');
 console.log(electronBuildCmd.join(' '));
 
 try {
   child_process.spawnSync(process.execPath, electronBuildCmd, {
     cwd: cwd,
-    stdio: ['inherit', 'inherit', 'inherit']
+    stdio: ['inherit', 'inherit', 'inherit'],
+    shell: 'bash'
   });
 } catch (e) {
   return;
