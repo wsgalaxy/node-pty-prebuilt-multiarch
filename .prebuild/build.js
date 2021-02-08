@@ -50,16 +50,6 @@ try {
     cwd: cwd,
     stdio: ['inherit', 'inherit', 'inherit']
   });
-
-  // build i386?
-  if (os.platform() === 'linux' && os.arch() === 'x64' && fs.existsSync('/usr/bin/apt')) {
-    nodeBuildCmd.push('-a', 'ia32');
-
-    child_process.spawnSync(process.execPath, nodeBuildCmd, {
-      cwd: cwd,
-      stdio: ['inherit', 'inherit', 'inherit']
-    });
-  }
 } catch (e) {
   console.error(e);
   return;
