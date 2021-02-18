@@ -49,4 +49,4 @@ export function open(options: IPtyOpenOptions): ITerminal {
  * Expose the native API when not Windows, note that this is not public API and
  * could be removed at any time.
  */
-export const native = (process.platform !== 'win32' ? require(ptyPath || '../build/Release/pty.node') : null);
+export const native = (process.platform !== 'win32' ? require('./prebuild-loader').default : null);
