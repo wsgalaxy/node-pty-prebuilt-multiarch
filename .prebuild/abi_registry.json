@@ -93,7 +93,14 @@
     "runtime": "node",
     "target": "15.0.0",
     "lts": false,
-    "future": true,
+    "future": false,
     "abi": "88"
+  },
+  {
+    "runtime": "node",
+    "target": "16.0.0",
+    "lts": false,
+    "future": true,
+    "abi": "93"
   }
 ]
