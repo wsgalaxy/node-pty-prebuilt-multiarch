@@ -1,21 +1,24 @@
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
 
-function prebuildName(): string {
-  const tags = [];
+const tags = [];
+tags.push(process.versions.hasOwnProperty('electron') ? 'electron' : 'node');
+tags.push('v' + process.versions.modules);
+// TODO: support musl
+tags.push(process.platform);
+tags.push(process.arch);
+// Something like 'prebuild/node-v85-win32-x64/build/Release'
+const prebuildBaseDir = path.join(__dirname, '../prebuilds', tags.join('-'), 'build/Release');
 
-  tags.push(process.versions.hasOwnProperty('electron') ? 'electron' : 'node');
+const ptyPathTmp = path.join(prebuildBaseDir, 'pty.node');
+const conPtyPathTmp = path.join(prebuildBaseDir, 'conpty.node');
+const conptyConsoleListPathTmp = path.join(prebuildBaseDir, 'conpty_console_list.node');
 
-  tags.push('abi' + process.versions.modules);
+console.log('ptyPath:' + ptyPathTmp);
+console.log('conPtyPath:' + conPtyPathTmp);
+console.log('conptyConsoleListPath:' + conptyConsoleListPathTmp);
 
-  if (os.platform() === 'linux' && fs.existsSync('/etc/alpine-release')) {
-    tags.push('musl');
-  }
-
-  return tags.join('.') + '.node';
-}
-
-const pathToBuild = path.resolve(__dirname, `../prebuilds/${os.platform()}-${os.arch()}/${prebuildName()}`);
-
-export const ptyPath: string | null = fs.existsSync(pathToBuild) ? pathToBuild : null;
+export const ptyPath = fs.existsSync(ptyPathTmp) ? ptyPathTmp : null;
+export const conPtyPath = fs.existsSync(conPtyPathTmp) ? conPtyPathTmp : null;
+export const conptyConsoleListPath =
+  fs.existsSync(conptyConsoleListPathTmp) ? conptyConsoleListPathTmp : null;
